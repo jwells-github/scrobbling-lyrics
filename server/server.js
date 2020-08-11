@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.get('/  /:username', function (req, res) {
+app.get('/getlastfm/:username', function (req, res) {
   apiGetRequest.getLastFmHistoryJson(req.params.username).then(response => {
     return res.status(200).json(response);
   }, reason =>{
