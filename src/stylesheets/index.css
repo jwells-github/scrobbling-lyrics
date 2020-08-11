@@ -1,0 +1,155 @@
+html,
+body,
+#root,
+.appContainer{
+  height:100%;
+}
+
+
+.appContainer{
+  overflow:hidden;
+}
+/* Header */
+.header{
+  display:flex;
+  background-color: #2298B3;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-bottom: 2px solid black;
+}
+
+.header h1{
+  margin-left: 50px;
+  flex-grow: 1;
+  text-align: center;
+  font-weight: 700;
+  font-size: 38px;
+}
+
+.trackHistory{
+  position:fixed;
+  right:0;
+  height:100%;
+  background-color: #2298B3;
+  overflow:scroll;
+  width:270px;
+  z-index: 1;
+}
+
+#last-track{
+  margin-bottom: 75px;
+}
+
+.track{
+  margin: 10px;
+  padding: 4px;
+  background:white;
+  display:flex;
+}
+
+.track img{
+  padding-right: 8px;
+}
+
+.track-details span{
+  font-weight: 500;
+  font-size: 20px;
+  display:block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width:170px;
+}
+
+.track-details{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+
+.spinner-container{
+  width:100%;
+  text-align: center;
+  margin-top:120px;
+  z-index: 0;
+}
+
+#loading-spinner{
+  height:280px;
+  width:280px;
+  animation-duration: 1.2s;
+}
+.lyrics-pane{
+  text-align:center;
+  padding: 20px;
+  white-space: pre-line;
+  height: 80vh;
+  overflow:scroll;
+  font-size:30px;
+  line-height:50px;
+}
+.lyrics-pane p{
+  padding: 0 200px 600px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.lyrics-pane::-webkit-scrollbar,
+.trackHistory::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.lyrics-pane,
+.trackHistory {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+@media screen and (max-width: 1024px){
+  .lyrics-pane p{
+    padding: 0 260px 400px 0;
+  }
+}
+
+@media screen and (min-width: 769px){
+  #toggleHistory{
+    display:none;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .lyrics-pane p{
+    padding: 0 50px 400px;
+  }
+  .mobile-hide{
+    display:none;
+  }
+}
+
+/*  */
+@media screen and (max-width: 480px) {
+  .userinput{
+    text-align: center;
+  }
+  .userinput form label{
+    display: block;
+  }
+  .currentTrack{
+    display:block;
+    text-align: center;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+  }
+  .lyrics-pane p{
+    padding: 0 0 400px;
+  }
+
+}
+
+
+
