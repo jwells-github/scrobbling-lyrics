@@ -2,7 +2,14 @@ require('dotenv').config({ path: '../.env' });
 const express = require('express'); 
 const apiGetRequest = require('./modules/apiGetRequest.js')
 const app = express();
+var path = require('path');
 
+
+app.use(express.static(path.join(__dirname, 'build')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.get('/getlastfm/:username', function (req, res) {
   apiGetRequest.getLastFmHistoryJson(req.params.username).then(response => {
