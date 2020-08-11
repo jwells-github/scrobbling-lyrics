@@ -55,7 +55,6 @@ function getJson(url){
       res.on('end', () => {
         try {
           const parsedData = JSON.parse(rawData);
-          //console.log(parsedData);
           resolve(parsedData);
         } 
         catch (e) {

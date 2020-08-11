@@ -85,7 +85,6 @@ class App extends Component {
       this.gettingLyrics = true;
       getTrackLyricsJson(track.artist['#text'], track.name)
       .then(response =>{
-        console.log(response);
         if(response.error){
           let shortenedTrackName = track.name.substring(0, track.name.lastIndexOf(" "));
           if(shortenedTrackName.length > 0){
