@@ -28,6 +28,47 @@ body,
   font-size: 38px;
 }
 
+
+.top-display{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom:1px solid black;
+  padding:10px;
+}
+
+.top-display,
+.top-display h2{
+  font-size: 18px;
+}
+
+.userinput{
+  padding-right:15px;
+  width:50%;
+  text-align: end;
+}
+.userinput label{
+  padding-right: 5px;
+}
+.current-track{
+  padding-left:15px;
+  display: flex;
+  width:50%;
+  text-align: start;
+}
+.current-track img{
+  margin-right: 8px;
+  height: 80px;
+  align-self: center;
+  border: 1px solid black;
+}
+.current-track div{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+
 /* Track History pane*/
 .trackHistory{
   position:fixed;
@@ -51,7 +92,7 @@ body,
 }
 
 .track img{
-  padding-right: 8px;
+  margin-right: 8px;
 }
 
 .track-details span{
@@ -117,14 +158,14 @@ body,
   }
 }
 
-/* Hide the toggle track history button on larger screens */
-@media screen and (min-width: 769px){
+@media screen and (min-width: 1200px){
+  /* Hide the toggle track history button on larger screens */
   #toggleHistory{
     display:none;
   }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 1200px){
   .lyrics-pane p{
     padding: 0 50px 400px;
   }
@@ -136,19 +177,29 @@ body,
 
 /*  */
 @media screen and (max-width: 480px) {
+  .top-display,
+  .top-display h2{
+    font-size: 12px;
+  }
+  .top-display input{
+    width:100%;
+    height:100%;
+  }
   .userinput{
-    text-align: center;
+    padding-right: 5px;
+  }
+  .current-track{
+    padding-left: 5px
+  }
+  .current-track img{
+    height: 60px
   }
   .userinput form label{
     display: block;
   }
-  .currentTrack{
-    display:block;
-    text-align: center;
-    border-bottom: 1px solid black;
-    margin-bottom: 20px;
-    padding-top: 10px;
-    padding-bottom: 5px;
+  /* Loading spinner*/
+  .spinner-container{
+    margin-top:60px;
   }
   .lyrics-pane p{
     padding: 0 0 400px;

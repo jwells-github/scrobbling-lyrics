@@ -43,7 +43,7 @@ function getJson(url){
                           `Expected application/json but received ${contentType}`);
       }
       if(error){
-        console.error(error.message);
+        //console.error(error.message);
         // Consume response data to free up memory
         res.resume();
         reject(error);
@@ -58,12 +58,12 @@ function getJson(url){
           resolve(parsedData);
         } 
         catch (e) {
-          console.error(e.message);
+          //console.error(e.message);
           reject(e);
         }
       });
       }).on('error', (e) =>   {
-        console.error(`Got error: ${e.message}`);
+        //console.error(`Got error: ${e.message}`);
         reject(e);
       });
    })

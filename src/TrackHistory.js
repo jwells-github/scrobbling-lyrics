@@ -102,17 +102,10 @@ class Track extends Component{
 }
 
 function TrackIcon(props){
-  if(props.image.length > 0 ){
+  let imageURL = (props.image.length > 0 ? props.image : 'https://lastfm.freetls.fastly.net/i/u/64s/4128a6eb29f94943c9d206c08e625904.webp');
     return(
-      <img src={props.image} alt='track art'></img>
+      <img src={imageURL} alt='track art'></img>
     )
-  }
-  else{
-    // Default image
-    return(
-      <img src={'https://lastfm.freetls.fastly.net/i/u/64s/4128a6eb29f94943c9d206c08e625904.webp'} alt='track art'></img>
-    )
-  }
 }
 
 function TrackTitle(props){

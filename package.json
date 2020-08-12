@@ -15,7 +15,7 @@
     "react-scripts": "^3.4.2"
   },
   "scripts": {
-    "start": "cd server && node server.js",
+    "start": "react-scripts start",
     "build": "react-scripts build"
   },
   "eslintConfig": {

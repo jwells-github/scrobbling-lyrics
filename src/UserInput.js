@@ -6,11 +6,13 @@ class UserInput extends Component {
   }
 
   render() {
+    let userDisplay = (this.props.username.length > 0 ? 'User: ' + this.props.username : ' ')
     return (  
+      
       <div className="userinput">
       <UserNameField
         handleSubmit={this.props.handleSubmit}/>
-       <h2>{this.props.username}</h2> 
+       <h2>{userDisplay}</h2> 
       <InterfaceUpdateButton
         onClick={()=>this.onClickUpdateInterface(this.props.username)}/>
       </div>

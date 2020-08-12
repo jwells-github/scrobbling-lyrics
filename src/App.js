@@ -4,6 +4,7 @@ import UserInput from './UserInput'
 import Header from './Header'
 import TrackHistory from './TrackHistory'
 import Lyrics from './Lyrics'
+import SelectedSongDisplay  from './SelectedSongDisplay'
 import Spinner from 'react-bootstrap/Spinner' 
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
       lyrics: [],
       updateLyrics: true,
       mostRecentScrobbleId: '',
-      selectedSong: {'artist': '', 'track':''},
+      selectedSong: {'artist': '', 'track':'', 'art': ''},
       hideTrackHistory: true,
     };
     this.updateInterface = this.updateInterface.bind(this);
@@ -48,7 +49,7 @@ class App extends Component {
         this.setState({lastFmHistory: response})
       }
       else{
-        this.setState({username:'No Tracks Found'})
+        this.setState({username:'No User Found'})
       }
     })
   }
@@ -60,7 +61,8 @@ class App extends Component {
         // If the most recent scrobble hasn't already had its lyrics fetched
         let responseId = response.recenttracks.track[0].mbid;
         if(responseId !== this.state.mostRecentScrobble || responseId === ' '){
-          this.setLyrics(response.recenttracks.track[0]);
+          let mostRecentTrack = response.recenttracks.track[0]
+          this.setLyrics(mostRecentTrack);
           this.setState({mostRecentScrobble: responseId});
         }
       } 
@@ -90,12 +92,13 @@ class App extends Component {
           else{
             this.gettingLyrics = false;
             this.setState({lyrics:response})
-            this.setState({selectedSong:{'artist': '', 'track': ''}})
+            this.setState({selectedSong:{'artist': '', 'track': '', 'art': ''}})
           }
         } 
         else{
           this.gettingLyrics = false;
-          this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name}})
+          let trackArt = (track.image[2] ? track.image[2]['#text'] : '');
+          this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name, 'art':trackArt}})
           this.setState({lyrics:response})
         }
       })
@@ -120,10 +123,6 @@ class App extends Component {
     const selectedSong = this.state.selectedSong;
     const hideTrackHistory = this.state.hideTrackHistory;
 
-    let selectedSongMarkup = <span className='currentTrack  '></span>;
-    if(selectedSong.artist !== ''){
-      selectedSongMarkup = <span className='currentTrack'>{selectedSong.track} by {selectedSong.artist}</span>
-    }
     let mainContent = <Lyrics lyrics={trackLyrics}/>
     if(this.gettingLyrics){
       mainContent = 
@@ -135,20 +134,20 @@ class App extends Component {
     }
     return (
       <div className="appContainer">
-        <Header 
-          toggleTrackHistory ={this.toggleTrackHistory}
-        />
+        <Header toggleTrackHistory ={this.toggleTrackHistory}/>
         <TrackHistory
           hideTrackHistory={hideTrackHistory}
           trackHistory={lastFmHistory}
           setLyrics={this.setLyrics}
           setUpdateLyricsState={this.setUpdateLyricsState}/>
-        <UserInput  
-          handleSubmit={this.handleSubmit}
-          username={username}
-          updateInterface={this.updateInterface}
-          setUpdateLyricsState={this.setUpdateLyricsState}/>
-        {selectedSongMarkup}
+        <div className='top-display'>
+          <UserInput  
+            handleSubmit={this.handleSubmit}
+            username={username}
+            updateInterface={this.updateInterface}
+            setUpdateLyricsState={this.setUpdateLyricsState}/>
+          <SelectedSongDisplay selectedSong={selectedSong}/>
+        </div>
         {mainContent}
       </div>
     )
