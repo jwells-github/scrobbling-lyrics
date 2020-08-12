@@ -18,17 +18,13 @@ class App extends Component {
       selectedSong: {'artist': '', 'track':''},
       hideTrackHistory: true,
     };
-    this.updateInterface =this.updateInterface.bind(this);
+    this.updateInterface = this.updateInterface.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.setLyrics = this.setLyrics.bind(this);
     this.setUpdateLyricsState = this.setUpdateLyricsState.bind(this);
     this.toggleTrackHistory = this.toggleTrackHistory.bind(this);
     this.interval = null;
     this.gettingLyrics = false; 
-  }
-
-  toggleTrackHistory(){
-    this.setState({hideTrackHistory:!this.state.hideTrackHistory});
   }
 
   handleSubmit(username){
@@ -44,21 +40,15 @@ class App extends Component {
     });
   }
 
-  clearInterval(){
-    if(this.interval){
-      clearInterval(this.interval);
-      this.interval = null;
-    }
-  }
-
   updateInterface(username){
     getLastFmHistoryJson(username).then(response =>{
+      // Check if any tracks
       if(response.recenttracks){
         this.updateLyricsPane(response)
         this.setState({lastFmHistory: response})
       }
       else{
-        this.setState({username:'User not found'})
+        this.setState({username:'No Tracks Found'})
       }
     })
   }
@@ -81,11 +71,15 @@ class App extends Component {
   }
 
   setLyrics(track){
+    // check if already fetching lyrics
     if(!this.gettingLyrics){
       this.gettingLyrics = true;
       getTrackLyricsJson(track.artist['#text'], track.name)
       .then(response =>{
         if(response.error){
+          // If no lyrics are returned, search again with the last word removed from the track title
+          // This solves the problem of 'London Calling - Remastered' returning no lyrics
+          // When lyrics are available for 'London Calling'
           let shortenedTrackName = track.name.substring(0, track.name.lastIndexOf(" "));
           if(shortenedTrackName.length > 0){
             let newTrack = track;        
@@ -105,6 +99,17 @@ class App extends Component {
           this.setState({lyrics:response})
         }
       })
+    }
+  }
+
+  toggleTrackHistory(){
+    this.setState({hideTrackHistory:!this.state.hideTrackHistory});
+  }
+
+  clearInterval(){
+    if(this.interval){
+      clearInterval(this.interval);
+      this.interval = null;
     }
   }
 

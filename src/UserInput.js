@@ -12,8 +12,7 @@ class UserInput extends Component {
         handleSubmit={this.props.handleSubmit}/>
        <h2>{this.props.username}</h2> 
       <InterfaceUpdateButton
-        onClick={()=>this.onClickUpdateInterface(this.props.username)}
-      />
+        onClick={()=>this.onClickUpdateInterface(this.props.username)}/>
       </div>
     )
   }

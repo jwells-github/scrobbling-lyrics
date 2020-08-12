@@ -8,6 +8,7 @@ class Lyrics extends Component {
 
   componentDidUpdate(prevprops){
     if(this.props){
+      // Scroll lyrics to the top when a new track is loaded
       if(this.props.lyrics.lyrics !== prevprops.lyrics.lyrics){
         this.lyricDiv.current.scrollTop = 0;
       }

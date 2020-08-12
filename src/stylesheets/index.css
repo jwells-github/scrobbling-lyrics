@@ -5,10 +5,10 @@ body,
   height:100%;
 }
 
-
 .appContainer{
   overflow:hidden;
 }
+
 /* Header */
 .header{
   display:flex;
@@ -28,6 +28,7 @@ body,
   font-size: 38px;
 }
 
+/* Track History pane*/
 .trackHistory{
   position:fixed;
   right:0;
@@ -69,7 +70,7 @@ body,
   justify-content: space-evenly;
 }
 
-
+/* Loading spinner*/
 .spinner-container{
   width:100%;
   text-align: center;
@@ -82,6 +83,8 @@ body,
   width:280px;
   animation-duration: 1.2s;
 }
+
+/* Lyrics pane */
 .lyrics-pane{
   text-align:center;
   padding: 20px;
@@ -114,6 +117,7 @@ body,
   }
 }
 
+/* Hide the toggle track history button on larger screens */
 @media screen and (min-width: 769px){
   #toggleHistory{
     display:none;
@@ -124,6 +128,7 @@ body,
   .lyrics-pane p{
     padding: 0 50px 400px;
   }
+  /* Hide the track history pane on smaller screens */
   .mobile-hide{
     display:none;
   }
