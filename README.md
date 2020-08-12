@@ -2,7 +2,7 @@
 
 Web app using React and Express.
 
-Displays lyrics for tracks in a user's [Last.fm](https://www.last.fm/] played history, using [lyrics.ovh](https://lyricsovh.docs.apiary.io/#) to fetch lyrics
+Displays lyrics for tracks in a user's [Last.fm](https://www.last.fm/) played history, using [lyrics.ovh](https://lyricsovh.docs.apiary.io/#) to fetch lyrics
 
 
 ## [View Live on Heroku](https://scrobbling-lyrics.herokuapp.com/)
