@@ -1,4 +1,5 @@
 const http = require('http');
+const https = require('https');
 
 function getLastFmHistoryJson(username){
   return new Promise((resolve,reject) =>{ 
@@ -15,7 +16,7 @@ function getLastFmHistoryJson(username){
 
 function getLyricsJson(artist,track_title){
   return new Promise((resolve,reject) =>{ 
-    getJson('http://private-anon-c9b97a7699-lyricsovh.apiary-proxy.com/v1/'+
+    getJsonSecure('https://private-anon-f8e03472f2-lyricsovh.apiary-proxy.com/v1/'+
               artist + '/' +
               track_title)
     .then(response =>{
@@ -69,6 +70,48 @@ function getJson(url){
    })
 }
 
+function getJsonSecure(url){
+  return new Promise((resolve,reject) =>{
+    https.get(url, (res) => {  
+      const { statusCode } = res;
+      const contentType = res.headers['content-type'];
+  
+      let error;
+  
+      if (statusCode !== 200){
+        error = new Error('Request Failed.' +
+                          `Status Code: ${statusCode}`);
+      } 
+      else if(!/^application\/json/.test(contentType)) {
+        error = new Error('Invalid content-type.\n' +
+                          `Expected application/json but received ${contentType}`);
+      }
+      if(error){
+        //console.error(error.message);
+        // Consume response data to free up memory
+        res.resume();
+        reject(error);
+      }
+  
+      res.setEncoding('utf8');
+      let rawData = '';
+      res.on('data', (chunk) => { rawData += chunk; });
+      res.on('end', () => {
+        try {
+          const parsedData = JSON.parse(rawData);
+          resolve(parsedData);
+        } 
+        catch (e) {
+          //console.error(e.message);
+          reject(e);
+        }
+      });
+      }).on('error', (e) =>   {
+        //console.error(`Got error: ${e.message}`);
+        reject(e);
+      });
+   })
+}
 
 module.exports = {
   getLastFmHistoryJson,getLyricsJson
