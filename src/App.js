@@ -14,6 +14,7 @@ class App extends Component {
       username: '', 
       lastFmHistory:[],
       lyrics: [],
+      fetchedTracks: [],
       updateLyrics: true,
       mostRecentScrobbleId: '',
       selectedSong: {'artist': '', 'track':'', 'art': ''},
@@ -76,42 +77,50 @@ class App extends Component {
     // check if already fetching lyrics
     if(!this.gettingLyrics){
       this.gettingLyrics = true;
-      getTrackLyricsJson(track.artist['#text'], track.name)
-      .then(response =>{
-        if(response.error){
-          // If no lyrics are returned, search again with the last word removed from the track title
-          // This solves the problem of 'London Calling - Remastered' returning no lyrics
-          // When lyrics are available for 'London Calling'
-          let shortenedTrackName = track.name.substring(0, track.name.lastIndexOf(" "));
-          if(shortenedTrackName.length > 0){
-            let newTrack = track;        
-            newTrack.name = shortenedTrackName;
-            this.gettingLyrics = false;
-            this.setLyrics(newTrack);
-          }
+      // Check if the track information has been cached
+      let fetchedTrack = this.state.fetchedTracks.find(
+        storedTrack => storedTrack.trackTitle === track.name 
+        && storedTrack.artist === track.artist['#text']);
+      if(fetchedTrack){
+        this.gettingLyrics = false;
+        this.setState({selectedSong:{'artist': fetchedTrack.artist, 'track':fetchedTrack.trackTitle, 'art':fetchedTrack.trackImage}})
+        this.setState({lyrics:{'lyrics':fetchedTrack.lyrics}})
+      }
+      else{
+        getTrackLyricsJson(track.artist['#text'], track.name)
+        .then(response =>{
+          if(response.error){
+            // If no lyrics are returned, search again with the last word removed from the track title
+            // This solves the problem of 'London Calling - Remastered' returning no lyrics
+            // When lyrics are available for 'London Calling'
+            let shortenedTrackName = track.name.substring(0, track.name.lastIndexOf(" "));
+            if(shortenedTrackName.length > 0){
+              let newTrack = track;        
+              newTrack.name = shortenedTrackName;
+              this.gettingLyrics = false;
+              this.setLyrics(newTrack);
+            }
+            else{
+              this.gettingLyrics = false;
+              this.setState({lyrics:{'error':'No Lyrics Found'}})
+              this.setState({selectedSong:{'artist': '', 'track': '', 'art': ''}})
+            }
+          } 
           else{
             this.gettingLyrics = false;
-            this.setState({lyrics:{'error':'No Lyrics Found'}})
-            this.setState({selectedSong:{'artist': '', 'track': '', 'art': ''}})
+            if(response.lyrics === ""){
+              this.setState({lyrics:{'error':'Unable to process request. \n Please try again Shortly. \n If you continue to see this message then lyrics may not be avaiable for this song'}})
+            }
+            else{
+              let trackArt = (track.image[2] ? track.image[2]['#text'] : '');
+              // Cache the track information
+              this.state.fetchedTracks.push({artist: track.artist['#text'], trackTitle:track.name, lyrics:response.lyrics, trackImage:trackArt});
+              this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name, 'art':trackArt}})
+              this.setState({lyrics:response})
+            }
           }
-        } 
-        else{
-          this.gettingLyrics = false;
-          console.log('this is our response')
-          console.log(response);
-          console.log(response.lyrics)
-          console.log(response.lyrics === "");
-          if(response.lyrics === ""){
-            this.setState({lyrics:{'error':'Unable to process request. \n Please try again Shortly. \n If you continue to see this message then lyrics may not be avaiable for this song'}})
-          }
-          else{
-            let trackArt = (track.image[2] ? track.image[2]['#text'] : '');
-            this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name, 'art':trackArt}})
-            this.setState({lyrics:response})
-          }
-
-        }
-      })
+        })
+      }
     }
   }
 
