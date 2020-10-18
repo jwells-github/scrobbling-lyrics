@@ -21,7 +21,7 @@ class Lyrics extends Component {
       lyricsText = <p>{this.props.lyrics.lyrics}</p>;
     }
     else if(this.props.lyrics && this.props.lyrics.error){
-      lyricsText = <p>No Lyrics found</p>;
+      lyricsText = <p>{this.props.lyrics.error}</p>;
     }
 
     return (  

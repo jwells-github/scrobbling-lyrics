@@ -67,7 +67,7 @@ class App extends Component {
         }
       } 
       else{
-        this.setState({lyrics:{'error':'no tracks found'}})
+        this.setState({lyrics:{'error':'No Tracks Found'}})
       }
     }
   }
@@ -91,15 +91,25 @@ class App extends Component {
           }
           else{
             this.gettingLyrics = false;
-            this.setState({lyrics:response})
+            this.setState({lyrics:{'error':'No Lyrics Found'}})
             this.setState({selectedSong:{'artist': '', 'track': '', 'art': ''}})
           }
         } 
         else{
           this.gettingLyrics = false;
-          let trackArt = (track.image[2] ? track.image[2]['#text'] : '');
-          this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name, 'art':trackArt}})
-          this.setState({lyrics:response})
+          console.log('this is our response')
+          console.log(response);
+          console.log(response.lyrics)
+          console.log(response.lyrics === "");
+          if(response.lyrics === ""){
+            this.setState({lyrics:{'error':'Unable to process request. \n Please try again Shortly. \n If you continue to see this message then lyrics may not be avaiable for this song'}})
+          }
+          else{
+            let trackArt = (track.image[2] ? track.image[2]['#text'] : '');
+            this.setState({selectedSong:{'artist': track.artist['#text'], 'track':track.name, 'art':trackArt}})
+            this.setState({lyrics:response})
+          }
+
         }
       })
     }
