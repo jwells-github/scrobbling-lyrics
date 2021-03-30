@@ -1,5 +1,6 @@
 const http = require('http');
 const https = require('https');
+const { resolve } = require('path');
 
 function getLastFmHistoryJson(username){
   return new Promise((resolve,reject) =>{ 
@@ -14,9 +15,9 @@ function getLastFmHistoryJson(username){
   })
 }
 
-function getLyricsJson(artist,track_title){
-  return new Promise((resolve,reject) =>{ 
-    getJsonSecure('https://private-anon-f8e03472f2-lyricsovh.apiary-proxy.com/v1/'+
+function getLyricsJson(artist,track_title){ 
+  let lyricsJson = new Promise((resolve,reject) =>{ 
+    getJsonSecure('https://api.lyrics.ovh/v1/'+
               artist + '/' +
               track_title)
     .then(response =>{
@@ -25,6 +26,18 @@ function getLyricsJson(artist,track_title){
       reject(reason);
     })
   })
+  let timeout = new Promise((resolve,reject) =>{
+    let timer = setTimeout(() =>{
+      clearTimeout(timer);
+      let error = new Error('Request took too long and was timed out');
+      reject(error)
+    }, 5000)
+  })
+  let race = Promise.race([
+    lyricsJson,
+    timeout
+  ])
+  return race
 }
 
 function getJson(url){
